@@ -82,6 +82,10 @@ class Example extends Phaser.Scene
             {
                 this.player.body.setAccelerationX(0);
             }
+            if (this.cursors.up.isDown && this.player.body.onFloor())
+            {
+                this.player.body.setVelocityY(-300);
+            }
 
             // cap the velocity at maxSpeed
             this.player.body.velocity.x = Phaser.Math.Clamp(this.player.body.velocity.x, -maxSpeed, maxSpeed);
