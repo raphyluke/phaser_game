@@ -15,6 +15,7 @@ class Example extends Phaser.Scene
 
         create ()
         {
+            this.physics.world.createDebugGraphic();
             // put the background image
             const bg = this.add.image(400, 300, 'background')
             // opacity of the background
@@ -59,18 +60,34 @@ class Example extends Phaser.Scene
             this.player.setPosition(32, 500);
         }
         update(){
+            const acceleration = 600; // Adjust as needed
+            const maxSpeed = 200; // Maximum speed
+            const drag = 500; // Drag or friction
+        
+            // Set drag
+            this.player.body.setDragX(drag);
+
            if (this.input.keyboard.checkDown(this.input.keyboard.addKey('SPACE'), 500)) {
                 // jump
-                this.player.y -= 32;
+                this.player.body.setVelocityY(-200);
             }
-            if (this.input.keyboard.checkDown(this.input.keyboard.addKey('LEFT'), 500)) {
+            else if (this.input.keyboard.checkDown(this.input.keyboard.addKey('LEFT'), 500)) {
                 // move left
-                this.player.x -= 5;
+                console.log("left")
+                this.player.body.setAccelerationX(-acceleration);
             }
-            if (this.input.keyboard.checkDown(this.input.keyboard.addKey('RIGHT'), 500)) {
+            else if (this.input.keyboard.checkDown(this.input.keyboard.addKey('RIGHT'), 500)) {
                 // move right
-                this.player.x += 5;
+                console.log("right")
+                this.player.body.setAccelerationX(acceleration);
             }
+            else {
+                // set acceleration to 0 so DRAG will take over
+                this.player.body.setAccelerationX(0);
+            }
+
+            // cap the velocity at maxSpeed
+            this.player.body.velocity.x = Phaser.Math.Clamp(this.player.body.velocity.x, -maxSpeed, maxSpeed);
         }
     }
 
