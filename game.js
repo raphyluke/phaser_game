@@ -5,6 +5,7 @@ class Example extends Phaser.Scene
         constructor (){
             super();
             this.player = null;
+            this.cursors = null;
         }
         preload ()
         {
@@ -16,6 +17,7 @@ class Example extends Phaser.Scene
         create ()
         {
             this.physics.world.createDebugGraphic();
+            this.cursors = this.input.keyboard.createCursorKeys();
             // put the background image
             const bg = this.add.image(400, 300, 'background')
             // opacity of the background
@@ -67,22 +69,17 @@ class Example extends Phaser.Scene
             // Set drag
             this.player.body.setDragX(drag);
 
-           if (this.input.keyboard.checkDown(this.input.keyboard.addKey('SPACE'), 500)) {
-                // jump
-                this.player.body.setVelocityY(-200);
-            }
-            else if (this.input.keyboard.checkDown(this.input.keyboard.addKey('LEFT'), 500)) {
-                // move left
-                console.log("left")
+            // left and right input logic
+            if (this.cursors.left.isDown)
+            {
                 this.player.body.setAccelerationX(-acceleration);
             }
-            else if (this.input.keyboard.checkDown(this.input.keyboard.addKey('RIGHT'), 500)) {
-                // move right
-                console.log("right")
+            else if (this.cursors.right.isDown)
+            {
                 this.player.body.setAccelerationX(acceleration);
             }
-            else {
-                // set acceleration to 0 so DRAG will take over
+            else
+            {
                 this.player.body.setAccelerationX(0);
             }
 
